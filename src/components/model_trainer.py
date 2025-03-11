@@ -47,7 +47,14 @@ class ModelTrainer:
             }
             
             model_report:dict=evaluate_models(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,models=models)
-            print("Model Report :",model_report)
+            # Filtering models with accuracy > 0.6
+            good_models = {name: score for name, score in model_report.items() if score > 0.6}
+
+            if not good_models:
+             raise CustomException("No best model found")
+
+            print("Filtered Model Report (Accuracy > 0.6):", good_models)
+
             ## To get best model score from dict
             best_model_score=max(sorted(model_report.values()))
             
